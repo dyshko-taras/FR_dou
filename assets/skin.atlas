@@ -1,0 +1,154 @@
+
+skin.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+GolosText-Black(1)_0
+  rotate: false
+  xy: 1, 65
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+GolosText-Black(1)_1
+  rotate: false
+  xy: 515, 65
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+GolosText-Black-32
+  rotate: false
+  xy: 1043, 1458
+  size: 506, 255
+  orig: 506, 255
+  offset: 0, 0
+  index: -1
+GolosText-Bold
+  rotate: false
+  xy: 1043, 1715
+  size: 506, 122
+  orig: 506, 122
+  offset: 0, 0
+  index: -1
+GolosText-SemiBold-16
+  rotate: false
+  xy: 1, 1
+  size: 503, 62
+  orig: 503, 62
+  offset: 0, 0
+  index: -1
+GolosText-SemiBold-24
+  rotate: false
+  xy: 1003, 1338
+  size: 506, 118
+  orig: 506, 118
+  offset: 0, 0
+  index: -1
+Balls
+  rotate: false
+  xy: 1003, 1113
+  size: 330, 223
+  orig: 330, 223
+  offset: 0, 0
+  index: -1
+Rectangle
+  rotate: false
+  xy: 1, 1581
+  size: 1040, 264
+  orig: 1040, 264
+  offset: 0, 0
+  index: -1
+achievements
+  rotate: false
+  xy: 1551, 1629
+  size: 125, 208
+  orig: 125, 208
+  offset: 0, 0
+  index: -1
+arrow left
+  rotate: false
+  xy: 1029, 145
+  size: 192, 192
+  orig: 192, 192
+  offset: 0, 0
+  index: -1
+ball_green
+  rotate: false
+  xy: 1003, 581
+  size: 240, 240
+  orig: 240, 240
+  offset: 0, 0
+  index: -1
+ball_red
+  rotate: false
+  xy: 1029, 339
+  size: 240, 240
+  orig: 240, 240
+  offset: 0, 0
+  index: -1
+bras_flag
+  rotate: false
+  xy: 1003, 823
+  size: 288, 288
+  orig: 288, 288
+  offset: 0, 0
+  index: -1
+eng_flag
+  rotate: false
+  xy: 1733, 1739
+  size: 288, 288
+  orig: 288, 288
+  offset: 0, 0
+  index: -1
+plus 1
+  rotate: false
+  xy: 1335, 1144
+  size: 192, 192
+  orig: 192, 192
+  offset: 0, 0
+  index: -1
+plus 2
+  rotate: false
+  xy: 1245, 629
+  size: 192, 192
+  orig: 192, 192
+  offset: 0, 0
+  index: -1
+rect achiev
+  rotate: false
+  xy: 1, 1847
+  size: 1220, 180
+  orig: 1220, 180
+  offset: 0, 0
+  index: -1
+rect achiev in
+  rotate: false
+  xy: 506, 20
+  size: 45, 43
+  split: 20, 20, 20, 20
+  orig: 45, 43
+  offset: 0, 0
+  index: -1
+rectangle_black
+  rotate: false
+  xy: 1223, 1839
+  size: 508, 188
+  orig: 508, 188
+  offset: 0, 0
+  index: -1
+ring
+  rotate: false
+  xy: 1, 579
+  size: 1000, 1000
+  orig: 1000, 1000
+  offset: 0, 0
+  index: -1
+setting
+  rotate: false
+  xy: 1271, 427
+  size: 187, 200
+  orig: 187, 200
+  offset: 0, 0
+  index: -1
