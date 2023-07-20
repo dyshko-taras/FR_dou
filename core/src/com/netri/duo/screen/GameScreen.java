@@ -5,8 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -16,12 +18,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
+import com.netri.duo.actor.BlockActor;
+
+import java.util.Iterator;
 
 public class GameScreen implements Screen {
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
@@ -47,6 +54,13 @@ public class GameScreen implements Screen {
     private Image achievementsButton;
     private HorizontalGroup horizontalGroupBalls;
 
+
+    private Array<BlockActor> blocks = new Array<BlockActor>();
+    private Group blocksGroup;
+    private long lastDropTime = 0;
+
+    public float Score = 0;
+
     public GameScreen(Main main) {
         this.main = main;
     }
@@ -57,6 +71,7 @@ public class GameScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("skin.json"));
         Gdx.input.setInputProcessor(stage);
+
 
         mainTable = new Table();
         mainTable.setFillParent(true);
@@ -107,9 +122,19 @@ public class GameScreen implements Screen {
         achievementsButton.setScaling(Scaling.fit);
         table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expandX().align(Align.bottomRight);
 
+
+
+
         setClickListeners();
+
+
+
         container.setActor(table);
         mainTable.add(container);
+
+        blocksGroup = new Group();
+        stage.addActor(blocksGroup);
+
         stage.addActor(mainTable);
     }
 
@@ -144,10 +169,17 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         updateCamera();
 
-        drawBackground(new Texture("background.png"));
+//        drawBackground(new Texture("background.png"));
 
         stage.act();
         stage.draw();
+
+        update(delta);
+    }
+
+    private void update(float delta) {
+        spawnBlocks();
+        moveBlocks(delta);
     }
 
     public void resize(int width, int height) {
@@ -206,4 +238,43 @@ public class GameScreen implements Screen {
         main.batch.draw(texture, x, y, imageWidth, imageHeight);
         main.batch.end();
     }
+
+    private void spawnBlocks() {
+        if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
+            final BlockActor block = new BlockActor(new Image(skin, "rectangle_black"));
+            blocks.add(block);
+//            block.setTouchable(Touchable.enabled);
+            blocksGroup.addActor(block);
+            lastDropTime = TimeUtils.nanoTime();
+//            block.addListener(new ClickListener() {
+//                @Override
+//                public void clicked(InputEvent event, float x, float y) {
+//                    blocks.removeValue(block, false);
+//                    blocksGroup.removeActor(block);
+//                }
+//            });
+
+        }
+    }
+
+
+    private void moveBlocks(float delta) {
+        for (Iterator<BlockActor> iterator = blocks.iterator(); iterator.hasNext(); ) {
+            BlockActor block = iterator.next();
+            block.rect.y -= block.speed * Gdx.graphics.getDeltaTime();
+            block.setPosition(block.rect.x, block.rect.y);
+            if (block.rect.y + block.rect.height < 0) {
+                Score++;
+                iterator.remove();
+                blocksGroup.removeActor(block);
+            }
+//            if (block.rect.overlaps(starship.rect)) {
+//                isGameOver = true;
+//                isPaused = true;
+//                restartButton.setVisible(true);
+//            }
+        }
+    }
+
+
 }

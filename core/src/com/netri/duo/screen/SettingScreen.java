@@ -38,8 +38,8 @@ public class SettingScreen implements Screen {
     private Image returnButton;
     private Image ballsIcon;
     private Label labelSetting;
-    private Image volumeOnButton;
-    private Image volumeOffButton;
+    private Image musicOnButton;
+    private Image musicOffButton;
     private Image languageUKButton;
     private Image languageBRButton;
     private Image settingButton;
@@ -87,11 +87,11 @@ public class SettingScreen implements Screen {
         horizontalGroup.align(Align.top);
         horizontalGroup.space(64.0f);
 
-        volumeOnButton = new Image(skin, "plus 1");
-        horizontalGroup.addActor(volumeOnButton);
+        musicOnButton = new Image(skin, "plus 1");
+        horizontalGroup.addActor(musicOnButton);
 
-        volumeOffButton = new Image(skin, "plus 2");
-        horizontalGroup.addActor(volumeOffButton);
+        musicOffButton = new Image(skin, "plus 2");
+        horizontalGroup.addActor(musicOffButton);
         table.add(horizontalGroup).padTop(76.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
@@ -135,6 +135,21 @@ public class SettingScreen implements Screen {
                 main.setScreen(new AchievScreen(main));
             }
         });
+
+        musicOnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.music.play();
+            }
+        });
+
+        musicOffButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.music.stop();
+            }
+        });
+
 
     }
 
