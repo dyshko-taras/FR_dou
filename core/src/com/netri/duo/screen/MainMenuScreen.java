@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -34,8 +36,12 @@ public class MainMenuScreen implements Screen {
     private Skin skin;
     private Stage stage;
 
+    private Table mainTable;
+    private Container container;
+    private Table table;
+
     private Image ballsIcon;
-    private TextField textField;
+    private Label label;
     private ImageTextButton playButton;
     private Image settingButton;
     private Image achievementsButton;
@@ -52,22 +58,48 @@ public class MainMenuScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        Table table = new Table();
-        table.setFillParent(true);
+        mainTable = new Table();
+        mainTable.setFillParent(true);
+
+        container = new Container();
+        container.minWidth(360.0f);
+        container.minHeight(800.0f);
+        container.maxWidth(360.0f);
+        container.maxHeight(800.0f);
+
+        table = new Table();
 
         ballsIcon = new Image(skin, "Balls");
         ballsIcon.setTouchable(disabled);
         ballsIcon.setScaling(Scaling.fit);
-        table.add(ballsIcon).padTop(68.0f).minWidth(330.0f).minHeight(223.0f).colspan(2);
+        table.add(ballsIcon).padTop(68.0f).expandX().align(Align.top).minWidth(330.0f).minHeight(223.0f).colspan(2);
 
         table.row();
-        textField = new TextField("DOU", skin);
-        textField.setAlignment(Align.center);
-        table.add(textField).padTop(32.0f).colspan(2);
+        label = new Label("DOU", skin, "label64");
+        label.setAlignment(Align.top);
+        table.add(label).padTop(32.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
         playButton = new ImageTextButton("PLAY", skin);
-        table.add(playButton).padTop(93.0f).colspan(2);
+        table.add(playButton).padTop(93.0f).expand().align(Align.top).colspan(2);
+
+        table.row();
+        settingButton = new Image(skin, "setting");
+        settingButton.setScaling(Scaling.fit);
+        table.add(settingButton).padLeft(24.0f).padBottom(34.0f).expandX().align(Align.bottomLeft);
+
+        achievementsButton = new Image(skin, "achievements");
+        achievementsButton.setScaling(Scaling.fit);
+        table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expandX().align(Align.bottomRight);
+
+        setClickListeners();
+        container.setActor(table);
+        mainTable.add(container);
+        stage.addActor(mainTable);
+
+    }
+
+    private void setClickListeners() {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,18 +107,16 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-
-        table.row();
-        settingButton = new Image(skin, "setting");
-        settingButton.setScaling(Scaling.fit);
-        table.add(settingButton).padLeft(24.0f).padBottom(34f).align(Align.bottomLeft);
-
-        achievementsButton = new Image(skin, "achievements");
-        achievementsButton.setScaling(Scaling.fit);
-        table.add(achievementsButton).padRight(28.0f).padBottom(28).align(Align.bottomRight).minWidth(28.0f).minHeight(48.0f);
+        settingButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new SettingScreen(main));
+            }
+        });
 
 
-        stage.addActor(table);
+
+
     }
 
 

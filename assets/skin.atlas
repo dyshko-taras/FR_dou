@@ -46,6 +46,13 @@ GolosText-SemiBold-24
   orig: 506, 118
   offset: 0, 0
   index: -1
+GolosText-SemiBold-MY
+  rotate: false
+  xy: 1003, 1338
+  size: 506, 118
+  orig: 506, 118
+  offset: 0, 0
+  index: -1
 Balls
   rotate: false
   xy: 1003, 1113
@@ -126,9 +133,9 @@ rect achiev
 rect achiev in
   rotate: false
   xy: 506, 20
-  size: 45, 43
-  split: 20, 20, 20, 20
-  orig: 45, 43
+  size: 43, 43
+  split: 21, 21, 21, 21
+  orig: 43, 43
   offset: 0, 0
   index: -1
 rectangle_black
@@ -150,5 +157,12 @@ setting
   xy: 1271, 427
   size: 187, 200
   orig: 187, 200
+  offset: 0, 0
+  index: -1
+white-pixel
+  rotate: false
+  xy: 1043, 1844
+  size: 1, 1
+  orig: 1, 1
   offset: 0, 0
   index: -1

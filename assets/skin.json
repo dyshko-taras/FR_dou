@@ -1,169 +1,205 @@
 {
-"com.badlogic.gdx.graphics.g2d.BitmapFont": {
-	"GolosText-Black-32": {
-		"file": "GolosText-Black-32.fnt",
-		"scaledSize": -1,
-		"markupEnabled": false,
-		"flip": false
-	},
-	"GolosText-Black-64": {
-		"file": "GolosText-Black(1).fnt",
-		"scaledSize": -1,
-		"markupEnabled": false,
-		"flip": false
-	},
-	"GolosText-Bold-24": {
-		"file": "GolosText-Bold.fnt",
-		"scaledSize": -1,
-		"markupEnabled": false,
-		"flip": false
-	},
-	"GolosText-SemiBold-16": {
-		"file": "GolosText-SemiBold-16.fnt",
-		"scaledSize": -1,
-		"markupEnabled": false,
-		"flip": false
-	},
-	"GolosText-SemiBold-24": {
-		"file": "GolosText-SemiBold-24.fnt",
-		"scaledSize": -1,
-		"markupEnabled": false,
-		"flip": false
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	GolosText-Black-32: {
+		file: GolosText-Black-32.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
-},
-"com.badlogic.gdx.graphics.Color": {
-	"RGBA_0_0_0_255": {
-		"r": 0,
-		"g": 0,
-		"b": 0,
-		"a": 1
-	},
-	"RGBA_142_195_63_255": {
-		"r": 0.5568628,
-		"g": 0.7647059,
-		"b": 0.24705882,
-		"a": 1
-	},
-	"RGBA_142_195_63_0": {
-		"r": 0.5568628,
-		"g": 0.7647059,
-		"b": 0.24705882,
-		"a": 0
-	},
-	"RGBA_255_255_255_255": {
-		"r": 1,
-		"g": 1,
-		"b": 1,
-		"a": 1
+	GolosText-Black-64: {
+		file: GolosText-Black(1).fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
-},
-"com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable": {
-	"achievements": {
-		"region": "achievements",
-		"minWidth": 29,
-		"minHeight": 48
-	},
-	"Balls": {
-		"region": "Balls",
-		"minWidth": 144,
-		"minHeight": 97
-	},
-	"Rectangle": {
-		"region": "Rectangle",
-		"minWidth": 260,
-		"minHeight": 66
-	},
-	"setting": {
-		"region": "setting",
-		"minWidth": 45,
-		"minHeight": 48
-	},
-	"arrow left": {
-		"region": "arrow left",
-		"minWidth": 48,
-		"minHeight": 48
-	},
-	"bras_flag": {
-		"region": "bras_flag",
-		"minWidth": 72,
-		"minHeight": 72
-	},
-	"eng_flag": {
-		"region": "eng_flag",
-		"minWidth": 72,
-		"minHeight": 72
-	},
-	"plus 1": {
-		"region": "plus 1",
-		"minWidth": 48,
-		"minHeight": 48
-	},
-	"plus 2": {
-		"region": "plus 2",
-		"minWidth": 48,
-		"minHeight": 48
-	},
-	"rectangle_black": {
-		"region": "rectangle_black",
-		"minWidth": 127,
-		"minHeight": 47
-	},
-	"ring": {
-		"region": "ring",
-		"minWidth": 250,
-		"minHeight": 250
-	},
-	"rect achiev": {
-		"region": "rect achiev",
-		"minWidth": 306,
-		"minHeight": 45
+	GolosText-Bold-24: {
+		file: GolosText-Bold.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
-},
-"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
-	"default": {
-		"font": "GolosText-Bold-24",
-		"up": "Rectangle"
+	GolosText-SemiBold-16: {
+		file: GolosText-SemiBold-16.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
-},
-"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
-	"default": {
-		"font": "GolosText-Black-32"
+	GolosText-SemiBold-24: {
+		file: GolosText-SemiBold-24.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
-},
-"com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
-	"default-horizontal": {
-		"background": "rect achiev"
-	},
-	"progBar": {
-		"background": "rect achiev",
-		"knobBefore": "rect achiev in"
+	GolosText-SemiBold-MY: {
+		file: GolosText-SemiBold-MY.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
-},
-"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
-	"default": {
-		"font": "GolosText-Black-64",
-		"fontColor": "RGBA_255_255_255_255"
-	},
-	"GolosText-Black-64": {
-		"font": "GolosText-Black-64",
-		"fontColor": "RGBA_255_255_255_255"
-	},
-	"GolosText-Black-32": {
-		"font": "GolosText-Black-32",
-		"fontColor": "RGBA_255_255_255_255"
-	},
-	"GolosText-SemiBold-16": {
-		"font": "GolosText-SemiBold-16",
-		"fontColor": "RGBA_255_255_255_255"
-	},
-	"GolosText-SemiBold-24": {
-		"font": "GolosText-SemiBold-24",
-		"fontColor": "RGBA_255_255_255_255"
+}
+com.badlogic.gdx.graphics.Color: {
+	RGBA_0_0_0_255: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
 	}
-},
-"com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle": {
-	"default": {
-		"label": "default"
+	RGBA_142_195_63_255: {
+		r: 0.5568628
+		g: 0.7647059
+		b: 0.24705882
+		a: 1
+	}
+	RGBA_142_195_63_0: {
+		r: 0.5568628
+		g: 0.7647059
+		b: 0.24705882
+		a: 0
+	}
+	RGBA_255_255_255_255: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable: {
+	achievements: {
+		region: achievements
+		minWidth: 29
+		minHeight: 48
+	}
+	Balls: {
+		region: Balls
+		minWidth: 144
+		minHeight: 97
+	}
+	Rectangle: {
+		region: Rectangle
+		minWidth: 260
+		minHeight: 66
+	}
+	setting: {
+		region: setting
+		minWidth: 45
+		minHeight: 48
+	}
+	arrow left: {
+		region: arrow left
+		minWidth: 48
+		minHeight: 48
+	}
+	bras_flag: {
+		region: bras_flag
+		minWidth: 72
+		minHeight: 72
+	}
+	eng_flag: {
+		region: eng_flag
+		minWidth: 72
+		minHeight: 72
+	}
+	plus 1: {
+		region: plus 1
+		minWidth: 48
+		minHeight: 48
+	}
+	plus 2: {
+		region: plus 2
+		minWidth: 48
+		minHeight: 48
+	}
+	rectangle_black: {
+		region: rectangle_black
+		minWidth: 127
+		minHeight: 47
+	}
+	ring: {
+		region: ring
+		minWidth: 250
+		minHeight: 250
+	}
+	rect achiev: {
+		region: rect achiev
+		minWidth: 306
+		minHeight: 45
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	reco: {
+		name: white-pixel
+		color: RGBA_0_0_0_255
+		minWidth: 43
+		minHeight: 43
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
+	default: {
+		font: GolosText-Bold-24
+		up: Rectangle
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: GolosText-Black-64
+	}
+	label64: {
+		parent: default
+		font: GolosText-Black-64
+	}
+	label32: {
+		parent: default
+		font: GolosText-Black-32
+	}
+	label24: {
+		parent: default
+		font: GolosText-SemiBold-24
+	}
+	label16: {
+		parent: default
+		font: GolosText-SemiBold-16
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: rect achiev
+		knobBefore: rect achiev in
+	}
+	default-vertical: {
+		background: rect achiev
+		knobBefore: rect achiev in
+	}
+	progBar: {
+		parent: default-horizontal
+		background: rect achiev
+		knobBefore: reco
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: GolosText-Black-64
+		fontColor: RGBA_255_255_255_255
+	}
+	GolosText-Black-64: {
+		font: GolosText-Black-64
+		fontColor: RGBA_255_255_255_255
+	}
+	GolosText-Black-32: {
+		font: GolosText-Black-32
+		fontColor: RGBA_255_255_255_255
+	}
+	GolosText-SemiBold-16: {
+		font: GolosText-SemiBold-16
+		fontColor: RGBA_255_255_255_255
+	}
+	GolosText-SemiBold-24: {
+		font: GolosText-SemiBold-24
+		fontColor: RGBA_255_255_255_255
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
 	}
 }
 }
