@@ -1,17 +1,16 @@
 package com.netri.duo.screen;
 
-import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,10 +19,11 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
 
-public class AchievScreen implements Screen {
+public class GameScreen implements Screen {
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
     public static final float SCREEN_HEIGHT = Main.SCREEN_HEIGHT;
 
@@ -38,33 +38,16 @@ public class AchievScreen implements Screen {
     private Container container;
     private Table table;
 
-
-
     private Image returnButton;
-    private Image ballsIcon;
-    private Label labelProgbar;
-
-    private ProgressBar progressBar1;
-    private Label labelProgbar1num;
-    private Label labelProgbar1text;
-
-    private ProgressBar progressBar2;
-    private Label labelProgbar2num;
-    private Label labelProgbar2text;
-
-    private ProgressBar progressBar3;
-    private Label labelProgbar3num;
-    private Label labelProgbar3text;
-
+    private Label labelScore;
+    private Image ring;
+    private Image redBall;
+    private Image blueBall;
     private Image settingButton;
     private Image achievementsButton;
+    private HorizontalGroup horizontalGroupBalls;
 
-
-
-
-
-
-    public AchievScreen(Main main) {
+    public GameScreen(Main main) {
         this.main = main;
     }
 
@@ -88,114 +71,48 @@ public class AchievScreen implements Screen {
 
         returnButton = new Image(skin, "arrow left");
         returnButton.setScaling(Scaling.fit);
-        table.add(returnButton).padLeft(24.0f).padTop(32.0f).expandX().align(Align.topLeft).minSize(48.0f);
-
-        ballsIcon = new Image(skin, "Balls");
-        ballsIcon.setTouchable(disabled);
-        ballsIcon.setScaling(Scaling.fit);
-        table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f).colspan(2);
+        table.add(returnButton).padLeft(24.0f).padTop(32.0f).expandX().align(Align.topLeft).minSize(48.0f).colspan(2);
 
         table.row();
-        labelProgbar = new Label("ACHIEVEMENTS", skin, "label32");
-        labelProgbar.setAlignment(Align.top);
-        table.add(labelProgbar).padTop(30.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
+        labelScore = new Label("0", skin);
+        table.add(labelScore).padTop(170.0f).expandX().colspan(2);
 
         table.row();
-        Container container1 = new Container();
-        container1.fill(true);
-        container1.minWidth(305.0f);
-        container1.minHeight(45.0f);
-        container1.maxWidth(305.0f);
-        container1.maxHeight(45.0f);
-
         Stack stack = new Stack();
 
-        progressBar1 = new ProgressBar(-1.0f, 10.0f, 1.0f, false, skin);
-        progressBar1.setValue(0);
-        stack.addActor(progressBar1);
+        ring = new Image(skin, "ring");
+        ring.setScaling(Scaling.fit);
+        stack.addActor(ring);
 
-        Table table2 = new Table();
+        horizontalGroupBalls = new HorizontalGroup();
+        horizontalGroupBalls.space(184.0f);
 
-        labelProgbar1num = new Label("10/10", skin, "label24");
-        labelProgbar1num.setAlignment(Align.center);
-        table2.add(labelProgbar1num).padLeft(18.0f).padBottom(6.0f).expand().align(Align.bottomLeft);
+        redBall = new Image(skin, "ball_red");
+        redBall.setScaling(Scaling.fit);
+        horizontalGroupBalls.addActor(redBall);
 
-        labelProgbar1text = new Label("PLAY 10 TIMES", skin, "label16");
-        labelProgbar1text.setAlignment(Align.right);
-        table2.add(labelProgbar1text).padRight(30.0f).padBottom(11.0f).expand().align(Align.bottomRight);
-        stack.addActor(table2);
+        blueBall = new Image(skin, "ball_green");
+        redBall.setScaling(Scaling.fit);
+        horizontalGroupBalls.addActor(blueBall);
 
-        container1.setActor(stack);
-        table.add(container1).padLeft(29.0f).padTop(128.0f).expandX().align(Align.topLeft).colspan(2);
-
-        table.row();
-        container1 = new Container();
-        container1.fill(true);
-        container1.minWidth(305.0f);
-        container1.minHeight(45.0f);
-        container1.maxWidth(305.0f);
-        container1.maxHeight(45.0f);
-
-        stack = new Stack();
-
-        progressBar2 = new ProgressBar(-2.0f, 20.0f, 1.0f, false, skin);
-        progressBar2.setValue(0);
-        stack.addActor(progressBar2);
-
-        table2 = new Table();
-
-        labelProgbar2num = new Label("25/20", skin, "label24");
-        labelProgbar2num.setAlignment(Align.center);
-        table2.add(labelProgbar2num).padLeft(18.0f).padBottom(6.0f).expand().align(Align.bottomLeft);
-
-        labelProgbar2text = new Label("GET 20 SCORE", skin, "label16");
-        labelProgbar2text.setAlignment(Align.right);
-        table2.add(labelProgbar2text).padRight(30.0f).padBottom(11.0f).expand().align(Align.bottomRight);
-        stack.addActor(table2);
-        container1.setActor(stack);
-        table.add(container1).padLeft(29.0f).padTop(59.0f).expandX().align(Align.topLeft).colspan(2);
-
-        table.row();
-        container1 = new Container();
-        container1.fill(true);
-        container1.minWidth(305.0f);
-        container1.minHeight(45.0f);
-        container1.maxWidth(305.0f);
-        container1.maxHeight(45.0f);
-
-        stack = new Stack();
-
-        progressBar3 = new ProgressBar(-6.0f, 60.0f, 1.0f, false, skin);
-        progressBar3.setValue(0);
-        stack.addActor(progressBar3);
-
-        table2 = new Table();
-
-        labelProgbar3num = new Label("25/60", skin, "label24");
-        labelProgbar3num.setAlignment(Align.center);
-        table2.add(labelProgbar3num).padLeft(18.0f).padBottom(6.0f).expand().align(Align.bottomLeft);
-
-        labelProgbar3text = new Label("GET 60 SCORE", skin, "label16");
-        labelProgbar3text.setAlignment(Align.right);
-        table2.add(labelProgbar3text).padRight(30.0f).padBottom(11.0f).expand().align(Align.bottomRight);
-        stack.addActor(table2);
-        container1.setActor(stack);
-        table.add(container1).padLeft(29.0f).padTop(59.0f).expandX().align(Align.topLeft).colspan(2);
+        stack.addActor(horizontalGroupBalls);
+        table.add(stack).expand().align(Align.bottom).colspan(2);
 
         table.row();
         settingButton = new Image(skin, "setting");
         settingButton.setScaling(Scaling.fit);
-        table.add(settingButton).padLeft(24.0f).padBottom(34.0f).expand().align(Align.bottomLeft);
+        table.add(settingButton).padLeft(24.0f).padBottom(34.0f).expandX().align(Align.bottomLeft);
 
         achievementsButton = new Image(skin, "achievements");
         achievementsButton.setScaling(Scaling.fit);
-        table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expand().align(Align.bottomRight);
+        table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expandX().align(Align.bottomRight);
 
         setClickListeners();
         container.setActor(table);
         mainTable.add(container);
         stage.addActor(mainTable);
     }
+
 
     private void setClickListeners() {
         returnButton.addListener(new ClickListener() {
@@ -211,7 +128,17 @@ public class AchievScreen implements Screen {
                 main.setScreen(new SettingScreen(main));
             }
         });
+
+        achievementsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new AchievScreen(main));
+            }
+        });
+
     }
+
+
 
     @Override
     public void render(float delta) {

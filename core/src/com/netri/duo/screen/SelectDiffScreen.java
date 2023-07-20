@@ -1,7 +1,5 @@
 package com.netri.duo.screen;
 
-import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -40,7 +38,7 @@ public class SelectDiffScreen implements Screen {
 
     private Image returnButton;
     private Image ballsIcon;
-    private Label label;
+    private Label labelSelectDiff;
     private ImageTextButton easyButton;
     private ImageTextButton hardButton;
     private Image settingButton;
@@ -78,10 +76,10 @@ public class SelectDiffScreen implements Screen {
         table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f);
 
         table.row();
-        Label label = new Label("SELECT \n"
+        labelSelectDiff = new Label("SELECT \n"
                 + "DIFFICULTY", skin, "label32");
-        label.setAlignment(Align.top);
-        table.add(label).padTop(30.0f).expandX().align(Align.top).colspan(2);
+        labelSelectDiff.setAlignment(Align.top);
+        table.add(labelSelectDiff).padTop(30.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
         easyButton = new ImageTextButton("EASY", skin);
@@ -122,8 +120,32 @@ public class SelectDiffScreen implements Screen {
             }
         });
 
+        achievementsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new AchievScreen(main));
+            }
+        });
 
+        easyButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new GameScreen(main));
+            }
+        });
 
+//        hardButton.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                main.setScreen(new GameScreen(main));
+//            }
+//        });
+        hardButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new GameOverScreen(main));
+            }
+        });
 
     }
 

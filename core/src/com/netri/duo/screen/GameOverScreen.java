@@ -4,26 +4,28 @@ import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
 
-public class AchievScreen implements Screen {
+public class GameOverScreen implements Screen {
+
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
     public static final float SCREEN_HEIGHT = Main.SCREEN_HEIGHT;
 
@@ -38,39 +40,22 @@ public class AchievScreen implements Screen {
     private Container container;
     private Table table;
 
-
-
     private Image returnButton;
     private Image ballsIcon;
-    private Label labelProgbar;
-
-    private ProgressBar progressBar1;
-    private Label labelProgbar1num;
-    private Label labelProgbar1text;
-
-    private ProgressBar progressBar2;
-    private Label labelProgbar2num;
-    private Label labelProgbar2text;
-
-    private ProgressBar progressBar3;
-    private Label labelProgbar3num;
-    private Label labelProgbar3text;
-
+    private Label labelGameOver;
+    private Label labelScore;
+    private ImageTextButton playAgainButton;
     private Image settingButton;
     private Image achievementsButton;
 
-
-
-
-
-
-    public AchievScreen(Main main) {
+    public GameOverScreen(Main main) {
         this.main = main;
     }
 
     @Override
     public void show() {
         setCamera();
+
 
         skin = new Skin(Gdx.files.internal("skin.json"));
         Gdx.input.setInputProcessor(stage);
@@ -96,91 +81,18 @@ public class AchievScreen implements Screen {
         table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f).colspan(2);
 
         table.row();
-        labelProgbar = new Label("ACHIEVEMENTS", skin, "label32");
-        labelProgbar.setAlignment(Align.top);
-        table.add(labelProgbar).padTop(30.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
+        labelGameOver = new Label("GAME OVER", skin, "label32");
+        labelGameOver.setAlignment(Align.top);
+        table.add(labelGameOver).padTop(30.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
 
         table.row();
-        Container container1 = new Container();
-        container1.fill(true);
-        container1.minWidth(305.0f);
-        container1.minHeight(45.0f);
-        container1.maxWidth(305.0f);
-        container1.maxHeight(45.0f);
-
-        Stack stack = new Stack();
-
-        progressBar1 = new ProgressBar(-1.0f, 10.0f, 1.0f, false, skin);
-        progressBar1.setValue(0);
-        stack.addActor(progressBar1);
-
-        Table table2 = new Table();
-
-        labelProgbar1num = new Label("10/10", skin, "label24");
-        labelProgbar1num.setAlignment(Align.center);
-        table2.add(labelProgbar1num).padLeft(18.0f).padBottom(6.0f).expand().align(Align.bottomLeft);
-
-        labelProgbar1text = new Label("PLAY 10 TIMES", skin, "label16");
-        labelProgbar1text.setAlignment(Align.right);
-        table2.add(labelProgbar1text).padRight(30.0f).padBottom(11.0f).expand().align(Align.bottomRight);
-        stack.addActor(table2);
-
-        container1.setActor(stack);
-        table.add(container1).padLeft(29.0f).padTop(128.0f).expandX().align(Align.topLeft).colspan(2);
+        labelScore = new Label("SCORE: 22", skin, "label32");
+        labelScore.setAlignment(Align.top);
+        table.add(labelScore).padTop(69.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
 
         table.row();
-        container1 = new Container();
-        container1.fill(true);
-        container1.minWidth(305.0f);
-        container1.minHeight(45.0f);
-        container1.maxWidth(305.0f);
-        container1.maxHeight(45.0f);
-
-        stack = new Stack();
-
-        progressBar2 = new ProgressBar(-2.0f, 20.0f, 1.0f, false, skin);
-        progressBar2.setValue(0);
-        stack.addActor(progressBar2);
-
-        table2 = new Table();
-
-        labelProgbar2num = new Label("25/20", skin, "label24");
-        labelProgbar2num.setAlignment(Align.center);
-        table2.add(labelProgbar2num).padLeft(18.0f).padBottom(6.0f).expand().align(Align.bottomLeft);
-
-        labelProgbar2text = new Label("GET 20 SCORE", skin, "label16");
-        labelProgbar2text.setAlignment(Align.right);
-        table2.add(labelProgbar2text).padRight(30.0f).padBottom(11.0f).expand().align(Align.bottomRight);
-        stack.addActor(table2);
-        container1.setActor(stack);
-        table.add(container1).padLeft(29.0f).padTop(59.0f).expandX().align(Align.topLeft).colspan(2);
-
-        table.row();
-        container1 = new Container();
-        container1.fill(true);
-        container1.minWidth(305.0f);
-        container1.minHeight(45.0f);
-        container1.maxWidth(305.0f);
-        container1.maxHeight(45.0f);
-
-        stack = new Stack();
-
-        progressBar3 = new ProgressBar(-6.0f, 60.0f, 1.0f, false, skin);
-        progressBar3.setValue(0);
-        stack.addActor(progressBar3);
-
-        table2 = new Table();
-
-        labelProgbar3num = new Label("25/60", skin, "label24");
-        labelProgbar3num.setAlignment(Align.center);
-        table2.add(labelProgbar3num).padLeft(18.0f).padBottom(6.0f).expand().align(Align.bottomLeft);
-
-        labelProgbar3text = new Label("GET 60 SCORE", skin, "label16");
-        labelProgbar3text.setAlignment(Align.right);
-        table2.add(labelProgbar3text).padRight(30.0f).padBottom(11.0f).expand().align(Align.bottomRight);
-        stack.addActor(table2);
-        container1.setActor(stack);
-        table.add(container1).padLeft(29.0f).padTop(59.0f).expandX().align(Align.topLeft).colspan(2);
+        playAgainButton = new ImageTextButton("PLAY AGAIN", skin);
+        table.add(playAgainButton).padTop(137.0f).expandX().colspan(2);
 
         table.row();
         settingButton = new Image(skin, "setting");
@@ -209,6 +121,20 @@ public class AchievScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 main.setScreen(new SettingScreen(main));
+            }
+        });
+
+        achievementsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new AchievScreen(main));
+            }
+        });
+
+        playAgainButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new GameScreen(main));
             }
         });
     }
@@ -255,6 +181,7 @@ public class AchievScreen implements Screen {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         Gdx.input.setInputProcessor(stage);
     }
+
 
     private void updateCamera() {
         ScreenUtils.clear(1, 1, 1, 1);

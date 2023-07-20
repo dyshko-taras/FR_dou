@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
@@ -41,7 +40,7 @@ public class MainMenuScreen implements Screen {
     private Table table;
 
     private Image ballsIcon;
-    private Label label;
+    private Label labelPlay;
     private ImageTextButton playButton;
     private Image settingButton;
     private Image achievementsButton;
@@ -75,9 +74,9 @@ public class MainMenuScreen implements Screen {
         table.add(ballsIcon).padTop(68.0f).expandX().align(Align.top).minWidth(330.0f).minHeight(223.0f).colspan(2);
 
         table.row();
-        label = new Label("DOU", skin, "label64");
-        label.setAlignment(Align.top);
-        table.add(label).padTop(32.0f).expandX().align(Align.top).colspan(2);
+        labelPlay = new Label("DOU", skin, "label64");
+        labelPlay.setAlignment(Align.top);
+        table.add(labelPlay).padTop(32.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
         playButton = new ImageTextButton("PLAY", skin);
@@ -115,8 +114,12 @@ public class MainMenuScreen implements Screen {
         });
 
 
-
-
+        achievementsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new AchievScreen(main));
+            }
+        });
     }
 
 

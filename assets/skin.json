@@ -89,6 +89,16 @@ com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable: {
 		minWidth: 48
 		minHeight: 48
 	}
+	ball_green: {
+		region: ball_green
+		minWidth: 60
+		minHeight: 60
+	}
+	ball_red: {
+		region: ball_red
+		minWidth: 60
+		minHeight: 60
+	}
 	bras_flag: {
 		region: bras_flag
 		minWidth: 72

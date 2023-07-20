@@ -37,6 +37,7 @@ public class SettingScreen implements Screen {
 
     private Image returnButton;
     private Image ballsIcon;
+    private Label labelSetting;
     private Image volumeOnButton;
     private Image volumeOffButton;
     private Image languageUKButton;
@@ -77,9 +78,9 @@ public class SettingScreen implements Screen {
         table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f).colspan(2);
 
         table.row();
-        Label label = new Label("SETTING", skin, "label32");
-        label.setAlignment(Align.top);
-        table.add(label).padTop(30.0f).expandX().align(Align.top).colspan(2);
+        labelSetting = new Label("SETTING", skin, "label32");
+        labelSetting.setAlignment(Align.top);
+        table.add(labelSetting).padTop(30.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
         HorizontalGroup horizontalGroup = new HorizontalGroup();
@@ -128,8 +129,12 @@ public class SettingScreen implements Screen {
             }
         });
 
-
-
+        achievementsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new AchievScreen(main));
+            }
+        });
 
     }
 
