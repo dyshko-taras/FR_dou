@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("DOU");
 		config.setWindowedMode(360,800);
+//		config.setWindowedMode(400,400);
 		config.useVsync(true);
 		config.setForegroundFPS(60);
 		new Lwjgl3Application(new Main(), config);

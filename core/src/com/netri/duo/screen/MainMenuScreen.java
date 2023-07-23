@@ -164,9 +164,7 @@ public class MainMenuScreen implements Screen {
         viewport = new ExtendViewport(SCREEN_WIDTH, SCREEN_HEIGHT,camera);
         stage = new Stage(viewport);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        Gdx.input.setInputProcessor(stage);
     }
-
 
 
     private void updateCamera() {

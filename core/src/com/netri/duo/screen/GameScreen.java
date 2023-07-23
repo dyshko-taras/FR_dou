@@ -1,14 +1,14 @@
 package com.netri.duo.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -23,9 +23,9 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
+import com.netri.duo.actor.BallsActor;
 import com.netri.duo.actor.BlockActor;
 
 import java.util.Iterator;
@@ -36,7 +36,6 @@ public class GameScreen implements Screen {
 
     private final Main main;
     private Viewport viewport;
-    private OrthographicCamera camera;
 
     private Skin skin;
     private Stage stage;
@@ -45,19 +44,33 @@ public class GameScreen implements Screen {
     private Container container;
     private Table table;
 
+    private Vector2 containerVector;
+    private float aX = 0;
+    private float aY = 0;
+
     private Image returnButton;
     private Label labelScore;
     private Image ring;
-    private Image redBall;
-    private Image blueBall;
+    //    private Image redBall;
+//    private Image blueBall;
     private Image settingButton;
     private Image achievementsButton;
     private HorizontalGroup horizontalGroupBalls;
 
+    // My actors
+    private boolean isActorAdded = false;
+    private Group ballsGroup;
+    private BallsActor ballRed;
+    private BallsActor ballBlue;
+    private final Vector3 touchPos = new Vector3();
+    private float speedBalls = 60;
 
-    private Array<BlockActor> blocks = new Array<BlockActor>();
+    private Array<BlockActor> blocks = new Array<>();
     private Group blocksGroup;
     private long lastDropTime = 0;
+    private long deltaTimeMillis = 2000;
+    private float speedBlock = 200;
+
 
     public float Score = 0;
 
@@ -67,20 +80,25 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        setCamera();
-
+        setCameraAndStage();
         skin = new Skin(Gdx.files.internal("skin.json"));
-        Gdx.input.setInputProcessor(stage);
-
 
         mainTable = new Table();
         mainTable.setFillParent(true);
+
+        Stack stackMain = new Stack();
+
+        Texture texture = new Texture("background.png");
+        Image image = new Image(texture);
+        image.setScaling(Scaling.fillY);
+        stackMain.addActor(image);
 
         container = new Container();
         container.minWidth(360.0f);
         container.minHeight(800.0f);
         container.maxWidth(360.0f);
         container.maxHeight(800.0f);
+
 
         table = new Table();
 
@@ -102,13 +120,14 @@ public class GameScreen implements Screen {
         horizontalGroupBalls = new HorizontalGroup();
         horizontalGroupBalls.space(184.0f);
 
-        redBall = new Image(skin, "ball_red");
-        redBall.setScaling(Scaling.fit);
-        horizontalGroupBalls.addActor(redBall);
-
-        blueBall = new Image(skin, "ball_green");
-        redBall.setScaling(Scaling.fit);
-        horizontalGroupBalls.addActor(blueBall);
+//        redBall = new Image(skin, "ball_red");
+//        redBall.setScaling(Scaling.fit);
+//        horizontalGroupBalls.addActor(redBall);
+//
+//
+//        blueBall = new Image(skin, "ball_green");
+//        redBall.setScaling(Scaling.fit);
+//        horizontalGroupBalls.addActor(blueBall);
 
         stack.addActor(horizontalGroupBalls);
         table.add(stack).expand().align(Align.bottom).colspan(2);
@@ -123,19 +142,20 @@ public class GameScreen implements Screen {
         table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expandX().align(Align.bottomRight);
 
 
-
-
         setClickListeners();
 
-
-
         container.setActor(table);
-        mainTable.add(container);
+        stackMain.addActor(container);
+        mainTable.add(stackMain);
+        stage.addActor(mainTable);
 
         blocksGroup = new Group();
         stage.addActor(blocksGroup);
 
-        stage.addActor(mainTable);
+        ballsGroup = new Group();
+        stage.addActor(ballsGroup);
+
+
     }
 
 
@@ -160,16 +180,12 @@ public class GameScreen implements Screen {
                 main.setScreen(new AchievScreen(main));
             }
         });
-
     }
-
 
 
     @Override
     public void render(float delta) {
         updateCamera();
-
-//        drawBackground(new Texture("background.png"));
 
         stage.act();
         stage.draw();
@@ -178,8 +194,11 @@ public class GameScreen implements Screen {
     }
 
     private void update(float delta) {
+        setContainerPosition();
+        addMyActors();
         spawnBlocks();
-        moveBlocks(delta);
+        removeBlocks();
+        rotateGroup(delta);
     }
 
     public void resize(int width, int height) {
@@ -207,11 +226,9 @@ public class GameScreen implements Screen {
         main.batch.dispose();
     }
 
-    private void setCamera() {
-        camera = new OrthographicCamera();
-        viewport = new ExtendViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
+    private void setCameraAndStage() {
+        viewport = new ExtendViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(viewport);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -224,57 +241,74 @@ public class GameScreen implements Screen {
     private void resizeCamera(int width, int height) {
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
     }
 
-    private void drawBackground(Texture texture) {
-        float aspectRatio = (float) texture.getWidth() / texture.getHeight();
-        float imageHeight = camera.viewportHeight;
-        float imageWidth = imageHeight * aspectRatio;
-        float x = camera.viewportWidth / 2 - imageWidth / 2;
-        float y = 0;
+    private void setContainerPosition() {
+        containerVector = container.localToStageCoordinates(new Vector2(0, 0));
 
-        main.batch.begin();
-        main.batch.draw(texture, x, y, imageWidth, imageHeight);
-        main.batch.end();
+        if (aX != containerVector.x) {
+            aX = containerVector.x;
+            System.out.println(aX);
+        }
+
+        if (aY != containerVector.y) {
+            aY = containerVector.y;
+        }
     }
 
-    private void spawnBlocks() {
-        if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
-            final BlockActor block = new BlockActor(new Image(skin, "rectangle_black"));
-            blocks.add(block);
-//            block.setTouchable(Touchable.enabled);
-            blocksGroup.addActor(block);
-            lastDropTime = TimeUtils.nanoTime();
-//            block.addListener(new ClickListener() {
-//                @Override
-//                public void clicked(InputEvent event, float x, float y) {
-//                    blocks.removeValue(block, false);
-//                    blocksGroup.removeActor(block);
-//                }
-//            });
+    private void addMyActors() {
+        if (!isActorAdded) {
 
+            ballRed = new BallsActor(new Image(skin, "ball_red"), containerVector, 24, 172, 30);
+            ballsGroup.addActor(ballRed);
+
+            ballBlue = new BallsActor(new Image(skin, "ball_green"), containerVector, 268, 172, 30);
+            ballsGroup.addActor(ballBlue);
+
+            ballsGroup.setOrigin(aX + SCREEN_WIDTH / 2, aY + 125 + 83);
+
+            isActorAdded = false;
         }
     }
 
 
-    private void moveBlocks(float delta) {
+    private void spawnBlocks() {
+        if (TimeUtils.millis() - lastDropTime > deltaTimeMillis) {
+            final BlockActor block = new BlockActor(new Image(skin, "rectangle_black"),
+                    containerVector,
+                    127,
+                    47,
+                    speedBlock);
+
+            blocks.add(block);
+            blocksGroup.addActor(block);
+            lastDropTime = TimeUtils.millis();
+        }
+    }
+
+
+    private void removeBlocks() {
         for (Iterator<BlockActor> iterator = blocks.iterator(); iterator.hasNext(); ) {
             BlockActor block = iterator.next();
-            block.rect.y -= block.speed * Gdx.graphics.getDeltaTime();
-            block.setPosition(block.rect.x, block.rect.y);
             if (block.rect.y + block.rect.height < 0) {
                 Score++;
                 iterator.remove();
                 blocksGroup.removeActor(block);
             }
-//            if (block.rect.overlaps(starship.rect)) {
-//                isGameOver = true;
-//                isPaused = true;
-//                restartButton.setVisible(true);
-//            }
         }
     }
 
+
+    private void rotateGroup(float delta) {
+        if (Gdx.input.isTouched()) {
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            viewport.unproject(touchPos);
+            if (touchPos.x > aX + SCREEN_WIDTH / 2) {
+                ballsGroup.rotateBy(delta * speedBalls);
+            } else {
+                ballsGroup.rotateBy(-delta * speedBalls);
+            }
+        }
+    }
 
 }

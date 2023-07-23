@@ -34,7 +34,7 @@ public class Main extends Game {
         batch = new SpriteBatch();
         bitmapFont = new BitmapFont();
         music = Gdx.audio.newMusic(Gdx.files.internal("sound.mp3"));
-        playMusic();
+//        playMusic();
         this.setScreen(new MainMenuScreen(this));
     }
 

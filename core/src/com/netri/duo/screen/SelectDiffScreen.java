@@ -143,7 +143,7 @@ public class SelectDiffScreen implements Screen {
         hardButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.setScreen(new ImageScreen(main));
+//                main.setScreen(new ImageScreen(main));
             }
         });
 
