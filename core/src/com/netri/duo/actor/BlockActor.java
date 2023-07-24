@@ -15,37 +15,39 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 
 
 public class BlockActor extends Actor {
-    private Image image;
-    public Rectangle rect;
-    public float speed;
-
     private float aX;
     private float aY;
 
+    private Image image;
+    private Rectangle rect;
+    public float speed;
+
+    public float width;
+    public float height;
 
     public BlockActor(Image image, Vector2 containerVector, float width, float height, float speed) {
         super();
-        this.image = image;
-
         aX = containerVector.x;
         aY = containerVector.y;
 
+        this.image = image;
         rect = new Rectangle();
-        rect.x = aX + MathUtils.random(0, Main.SCREEN_WIDTH - width);
-        rect.y = aY + Main.SCREEN_HEIGHT;
-        rect.width = width;
-        rect.height = height;
-
         this.speed = speed;
 
-        setPosition(rect.x, rect.y);
-        setSize(rect.width, rect.height);
+        setX(aX + MathUtils.random(0, Main.SCREEN_WIDTH - width));
+        setY(aY + Main.SCREEN_HEIGHT);
+        setSize(width, height);
+
+        this.width = width;
+        this.height = height;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         image.setX(getX());
         image.setY(getY());
+        image.setOrigin(getOriginX(), getOriginY());
+        image.setRotation(getRotation());
         image.draw(batch, parentAlpha);
     }
 
@@ -53,7 +55,16 @@ public class BlockActor extends Actor {
     public void act(float delta) {
         super.act(delta);
         moveBy(0, -speed * delta);
+        setBounds(getX(), getY(), getWidth(), getHeight());
+//        System.out.println(getY());
+    }
+
+    public Rectangle getRect() {
         rect.x = getX();
         rect.y = getY();
+        rect.width = getWidth();
+        rect.height = getHeight();
+        return rect;
     }
 }
+

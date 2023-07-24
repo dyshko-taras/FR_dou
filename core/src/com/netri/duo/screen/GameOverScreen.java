@@ -4,7 +4,6 @@ import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,9 +19,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
+import com.netri.duo.tools.GameSettings;
+import com.netri.duo.tools.Loc;
 
 public class GameOverScreen implements Screen {
 
@@ -48,8 +48,12 @@ public class GameOverScreen implements Screen {
     private Image settingButton;
     private Image achievementsButton;
 
-    public GameOverScreen(Main main) {
+    private int score;
+
+    public GameOverScreen(Main main, int score) {
         this.main = main;
+        this.score = score;
+        setMaximumScore();
     }
 
     @Override
@@ -134,7 +138,7 @@ public class GameOverScreen implements Screen {
         playAgainButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.setScreen(new GameScreen(main));
+                main.setScreen(new GameScreen(main,GameScreen.difficulty));
             }
         });
     }
@@ -142,6 +146,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         updateCamera();
+        initLocalizedUI();
 
         drawBackground(new Texture("background.png"));
 
@@ -205,5 +210,17 @@ public class GameOverScreen implements Screen {
         main.batch.begin();
         main.batch.draw(texture, x, y, imageWidth, imageHeight);
         main.batch.end();
+    }
+
+    private void initLocalizedUI() {
+        labelGameOver.setText(Loc.getLoc(Loc.GAME_OVER));
+        labelScore.setText(Loc.getLoc(Loc.SCORE) + score);
+        playAgainButton.setText(Loc.getLoc(Loc.PLAY_AGAIN));
+    }
+
+    private void setMaximumScore() {
+        if (GameSettings.getScore() < score) {
+            GameSettings.setScore(score);
+        }
     }
 }

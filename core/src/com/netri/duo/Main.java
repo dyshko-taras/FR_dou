@@ -1,24 +1,14 @@
 package com.netri.duo;
 
-import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
-
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.netri.duo.screen.MainMenuScreen;
+import com.netri.duo.screen.SettingScreen;
+import com.netri.duo.tools.GameSettings;
+import com.netri.duo.tools.Loc;
 
 public class Main extends Game {
 
@@ -31,10 +21,13 @@ public class Main extends Game {
 
 
     public void create() {
-        batch = new SpriteBatch();
-        bitmapFont = new BitmapFont();
-        music = Gdx.audio.newMusic(Gdx.files.internal("sound.mp3"));
-//        playMusic();
+        GameSettings.init();
+        initAssets();
+
+        Loc.setLanguage(GameSettings.getLanguage());
+        playMusic(GameSettings.getMusicOn());
+        GameSettings.setPlayGameTimes(GameSettings.getPlayGameTimes() + 1);
+        GameSettings.setScore(0);
         this.setScreen(new MainMenuScreen(this));
     }
 
@@ -52,8 +45,18 @@ public class Main extends Game {
         bitmapFont.dispose();
     }
 
-    private void playMusic() {
-        music.setLooping(true);
-        music.play();
+    public void initAssets() {
+        batch = new SpriteBatch();
+        bitmapFont = new BitmapFont();
+        music = Gdx.audio.newMusic(Gdx.files.internal("sound.mp3"));
+    }
+
+    public void playMusic(boolean isMusicOn) {
+        if (isMusicOn) {
+            music.setLooping(true);
+            music.play();
+        } else {
+            music.stop();
+        }
     }
 }

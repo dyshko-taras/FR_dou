@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
+import com.netri.duo.tools.Loc;
 
 public class SelectDiffScreen implements Screen {
 
@@ -130,20 +131,15 @@ public class SelectDiffScreen implements Screen {
         easyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.setScreen(new GameScreen(main));
+                main.setScreen(new GameScreen(main,1));
             }
         });
 
-//        hardButton.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                main.setScreen(new GameScreen(main));
-//            }
-//        });
         hardButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                main.setScreen(new ImageScreen(main));
+                main.setScreen(new GameScreen(main,2));
+
             }
         });
 
@@ -152,6 +148,7 @@ public class SelectDiffScreen implements Screen {
     @Override
     public void render(float delta) {
         updateCamera();
+        initLocalizedUI();
 
         drawBackground(new Texture("background.png"));
 
@@ -215,5 +212,11 @@ public class SelectDiffScreen implements Screen {
         main.batch.begin();
         main.batch.draw(texture, x, y, imageWidth, imageHeight);
         main.batch.end();
+    }
+
+    private void initLocalizedUI() {
+        labelSelectDiff.setText(Loc.getLoc(Loc.SELECT_DIFFICULTY));
+        easyButton.setText(Loc.getLoc(Loc.EASY));
+        hardButton.setText(Loc.getLoc(Loc.HARD));
     }
 }

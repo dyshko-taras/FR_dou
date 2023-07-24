@@ -22,6 +22,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
+import com.netri.duo.tools.GameSettings;
+import com.netri.duo.tools.Loc;
 
 public class AchievScreen implements Screen {
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
@@ -42,7 +44,7 @@ public class AchievScreen implements Screen {
 
     private Image returnButton;
     private Image ballsIcon;
-    private Label labelProgbar;
+    private Label labelAchiev;
 
     private ProgressBar progressBar1;
     private Label labelProgbar1num;
@@ -58,10 +60,6 @@ public class AchievScreen implements Screen {
 
     private Image settingButton;
     private Image achievementsButton;
-
-
-
-
 
 
     public AchievScreen(Main main) {
@@ -96,9 +94,9 @@ public class AchievScreen implements Screen {
         table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f).colspan(2);
 
         table.row();
-        labelProgbar = new Label("ACHIEVEMENTS", skin, "label32");
-        labelProgbar.setAlignment(Align.top);
-        table.add(labelProgbar).padTop(30.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
+        labelAchiev = new Label("ACHIEVEMENTS", skin, "label32");
+        labelAchiev.setAlignment(Align.top);
+        table.add(labelAchiev).padTop(30.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
 
         table.row();
         Container container1 = new Container();
@@ -165,7 +163,7 @@ public class AchievScreen implements Screen {
 
         stack = new Stack();
 
-        progressBar3 = new ProgressBar(-6.0f, 60.0f, 1.0f, false, skin);
+        progressBar3 = new ProgressBar(-8.0f, 60.0f, 1.0f, false, skin);
         progressBar3.setValue(0);
         stack.addActor(progressBar3);
 
@@ -190,6 +188,8 @@ public class AchievScreen implements Screen {
         achievementsButton = new Image(skin, "achievements");
         achievementsButton.setScaling(Scaling.fit);
         table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expand().align(Align.bottomRight);
+
+        setProgressBarData();
 
         setClickListeners();
         container.setActor(table);
@@ -216,6 +216,7 @@ public class AchievScreen implements Screen {
     @Override
     public void render(float delta) {
         updateCamera();
+        initLocalizedUI();
 
         drawBackground(new Texture("background.png"));
 
@@ -278,5 +279,23 @@ public class AchievScreen implements Screen {
         main.batch.begin();
         main.batch.draw(texture, x, y, imageWidth, imageHeight);
         main.batch.end();
+    }
+
+    private void initLocalizedUI() {
+        labelAchiev.setText(Loc.getLoc(Loc.ACHIEVEMENTS));
+        labelProgbar1text.setText(Loc.getLoc(Loc.PLAY_10_TIMES));
+        labelProgbar2text.setText(Loc.getLoc(Loc.GET_20_SCORE));
+        labelProgbar3text.setText(Loc.getLoc(Loc.GET_60_SCORE));
+    }
+
+    private void setProgressBarData() {
+        progressBar1.setValue(GameSettings.getPlayGameTimes());
+        labelProgbar1num.setText(GameSettings.getPlayGameTimes() + "/10");
+
+        progressBar2.setValue(GameSettings.getScore());
+        labelProgbar2num.setText(GameSettings.getScore() + "/20");
+
+        progressBar3.setValue(GameSettings.getScore());
+        labelProgbar3num.setText(GameSettings.getScore() + "/60");
     }
 }

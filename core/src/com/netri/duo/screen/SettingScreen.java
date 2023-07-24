@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
+import com.netri.duo.tools.GameSettings;
+import com.netri.duo.tools.Loc;
 
 public class SettingScreen implements Screen {
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
@@ -40,8 +42,8 @@ public class SettingScreen implements Screen {
     private Label labelSetting;
     private Image musicOnButton;
     private Image musicOffButton;
-    private Image languageUKButton;
-    private Image languageBRButton;
+    private Image languageEnButton;
+    private Image languageBrButton;
     private Image settingButton;
     private Image achievementsButton;
 
@@ -99,11 +101,11 @@ public class SettingScreen implements Screen {
         horizontalGroup.align(Align.top);
         horizontalGroup.space(40.0f);
 
-        languageUKButton = new Image(skin, "eng_flag");
-        horizontalGroup.addActor(languageUKButton);
+        languageEnButton = new Image(skin, "eng_flag");
+        horizontalGroup.addActor(languageEnButton);
 
-        languageBRButton = new Image(skin, "bras_flag");
-        horizontalGroup.addActor(languageBRButton);
+        languageBrButton = new Image(skin, "bras_flag");
+        horizontalGroup.addActor(languageBrButton);
         table.add(horizontalGroup).padTop(133.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
@@ -139,25 +141,41 @@ public class SettingScreen implements Screen {
         musicOnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.music.play();
+                GameSettings.setMusicOn(true);
+                main.playMusic(GameSettings.getMusicOn());
             }
         });
 
         musicOffButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.music.stop();
+                GameSettings.setMusicOn(false);
+                main.playMusic(GameSettings.getMusicOn());
             }
         });
 
+        languageEnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameSettings.setLanguage("en");
+                Loc.setLanguage(GameSettings.getLanguage());
+            }
+        });
 
+        languageBrButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameSettings.setLanguage("br");
+                Loc.setLanguage(GameSettings.getLanguage());
+            }
+        });
     }
-
 
 
     @Override
     public void render(float delta) {
         updateCamera();
+        initLocalizedUI();
 
         drawBackground(new Texture("background.png"));
 
@@ -220,5 +238,9 @@ public class SettingScreen implements Screen {
         main.batch.begin();
         main.batch.draw(texture, x, y, imageWidth, imageHeight);
         main.batch.end();
+    }
+
+    private void initLocalizedUI() {
+        labelSetting.setText(Loc.getLoc(Loc.SETTING));
     }
 }

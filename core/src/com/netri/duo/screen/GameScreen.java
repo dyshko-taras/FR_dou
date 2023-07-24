@@ -1,9 +1,9 @@
 package com.netri.duo.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -37,6 +37,8 @@ public class GameScreen implements Screen {
     private final Main main;
     private Viewport viewport;
 
+    public static int difficulty = 1;
+
     private Skin skin;
     private Stage stage;
 
@@ -45,7 +47,7 @@ public class GameScreen implements Screen {
     private Table table;
 
     private Vector2 containerVector;
-    private float aX = 0;
+    public float aX = 0;
     private float aY = 0;
 
     private Image returnButton;
@@ -63,19 +65,21 @@ public class GameScreen implements Screen {
     private BallsActor ballRed;
     private BallsActor ballBlue;
     private final Vector3 touchPos = new Vector3();
-    private float speedBalls = 60;
+    private float speedBalls = 100;
 
     private Array<BlockActor> blocks = new Array<>();
     private Group blocksGroup;
     private long lastDropTime = 0;
-    private long deltaTimeMillis = 2000;
-    private float speedBlock = 200;
+    private float deltaTimeMillis;
+    private float speedBlock;
 
 
-    public float Score = 0;
+    public int score = 0;
 
-    public GameScreen(Main main) {
+    public GameScreen(Main main, int difficulty) {
         this.main = main;
+        GameScreen.difficulty = difficulty;
+        setDifficulty();
     }
 
     @Override
@@ -154,8 +158,6 @@ public class GameScreen implements Screen {
 
         ballsGroup = new Group();
         stage.addActor(ballsGroup);
-
-
     }
 
 
@@ -187,18 +189,20 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         updateCamera();
 
+
         stage.act();
         stage.draw();
 
-        update(delta);
+        update();
     }
 
-    private void update(float delta) {
+    private void update() {
         setContainerPosition();
         addMyActors();
         spawnBlocks();
         removeBlocks();
-        rotateGroup(delta);
+        intersectionBlocksAndBalls();
+        setScore();
     }
 
     public void resize(int width, int height) {
@@ -248,7 +252,6 @@ public class GameScreen implements Screen {
 
         if (aX != containerVector.x) {
             aX = containerVector.x;
-            System.out.println(aX);
         }
 
         if (aY != containerVector.y) {
@@ -256,18 +259,26 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void setDifficulty() {
+        if (GameScreen.difficulty == 1) {
+            speedBlock = 80;
+            deltaTimeMillis = 4000;
+        } else {
+            speedBlock = 120;
+            deltaTimeMillis = 3000;
+        }
+    }
+
     private void addMyActors() {
         if (!isActorAdded) {
+            ballRed = new BallsActor(new Image(skin, "ball_red"), containerVector, 25, 178, 30, 155, 30);
+            stage.addActor(ballRed);
 
-            ballRed = new BallsActor(new Image(skin, "ball_red"), containerVector, 24, 172, 30);
-            ballsGroup.addActor(ballRed);
+            ballBlue = new BallsActor(new Image(skin, "ball_green"), containerVector, 275, 178, 30, -95, 30);
+            stage.addActor(ballBlue);
 
-            ballBlue = new BallsActor(new Image(skin, "ball_green"), containerVector, 268, 172, 30);
-            ballsGroup.addActor(ballBlue);
-
-            ballsGroup.setOrigin(aX + SCREEN_WIDTH / 2, aY + 125 + 83);
-
-            isActorAdded = false;
+            isActorAdded = true;
+            System.out.println("added!!!!");
         }
     }
 
@@ -279,7 +290,6 @@ public class GameScreen implements Screen {
                     127,
                     47,
                     speedBlock);
-
             blocks.add(block);
             blocksGroup.addActor(block);
             lastDropTime = TimeUtils.millis();
@@ -290,25 +300,31 @@ public class GameScreen implements Screen {
     private void removeBlocks() {
         for (Iterator<BlockActor> iterator = blocks.iterator(); iterator.hasNext(); ) {
             BlockActor block = iterator.next();
-            if (block.rect.y + block.rect.height < 0) {
-                Score++;
+            if (block.getY() + block.height < 0) {
+                score++;
                 iterator.remove();
                 blocksGroup.removeActor(block);
             }
         }
     }
 
+    private void intersectionBlocksAndBalls() {
+        for (Iterator<BlockActor> iterator = blocks.iterator(); iterator.hasNext(); ) {
+            BlockActor block = iterator.next();
 
-    private void rotateGroup(float delta) {
-        if (Gdx.input.isTouched()) {
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            viewport.unproject(touchPos);
-            if (touchPos.x > aX + SCREEN_WIDTH / 2) {
-                ballsGroup.rotateBy(delta * speedBalls);
-            } else {
-                ballsGroup.rotateBy(-delta * speedBalls);
+
+            if (Intersector.overlaps(ballRed.getCircle(), block.getRect()) || Intersector.overlaps(ballBlue.getCircle(), block.getRect())) {
+                System.out.println(ballRed.getCircle().y + " " + ballBlue.getCircle().y);
+                System.out.println(block.getRect().y);
+
+                main.setScreen(new GameOverScreen(main, score));
             }
         }
     }
+
+    private void setScore() {
+        labelScore.setText(score);
+    }
+
 
 }

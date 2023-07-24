@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
+import com.netri.duo.tools.Loc;
 
 public class MainMenuScreen implements Screen {
 
@@ -126,6 +127,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         updateCamera();
+        initLocalizedUI();
 
         drawBackground(new Texture("background.png"));
 
@@ -189,6 +191,11 @@ public class MainMenuScreen implements Screen {
         main.batch.begin();
         main.batch.draw(texture, x, y, imageWidth, imageHeight);
         main.batch.end();
+    }
+
+
+    private void initLocalizedUI() {
+        playButton.setText(Loc.getLoc(Loc.PLAY));
     }
 
 

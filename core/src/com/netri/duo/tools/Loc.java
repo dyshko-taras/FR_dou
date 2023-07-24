@@ -1,11 +1,9 @@
 package com.netri.duo.tools;
 
-import javax.swing.plaf.PanelUI;
-
 public class Loc {
 
     public static final int PLAY = 0;
-    public static final int SETTINGS = 1;
+    public static final int SETTING = 1;
     public static final int ACHIEVEMENTS = 2;
     public static final int PLAY_10_TIMES = 3;
     public static final int GET_20_SCORE = 4;
