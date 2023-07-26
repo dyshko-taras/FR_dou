@@ -1,6 +1,4 @@
-package com.netri.duo.screen;
-
-import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
+package com.netri.duo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -9,8 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -21,11 +19,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
-import com.netri.duo.tools.Loc;
+import com.netri.duo.tools.GameSettings;
+import com.netri.duo.tools.Localization;
 
-public class MainMenuScreen implements Screen {
-
-
+public class SettingScreen implements Screen {
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
     public static final float SCREEN_HEIGHT = Main.SCREEN_HEIGHT;
 
@@ -40,13 +37,19 @@ public class MainMenuScreen implements Screen {
     private Container container;
     private Table table;
 
+    private Image returnButton;
     private Image ballsIcon;
-    private Label labelPlay;
-    private ImageTextButton playButton;
+    private Label labelSetting;
+    private Image musicOnButton;
+    private Image musicOffButton;
+    private Image languageEnButton;
+    private Image languageBrButton;
     private Image settingButton;
     private Image achievementsButton;
 
-    public MainMenuScreen(Main main) {
+    private Texture texture;
+
+    public SettingScreen(Main main) {
         this.main = main;
     }
 
@@ -69,56 +72,104 @@ public class MainMenuScreen implements Screen {
 
         table = new Table();
 
+        returnButton = new Image(skin, "arrow left");
+        returnButton.setScaling(Scaling.fit);
+        table.add(returnButton).padLeft(24.0f).padTop(32.0f).expandX().align(Align.topLeft);
+
         ballsIcon = new Image(skin, "Balls");
-        ballsIcon.setTouchable(disabled);
         ballsIcon.setScaling(Scaling.fit);
-        table.add(ballsIcon).padTop(68.0f).expandX().align(Align.top).minWidth(330.0f).minHeight(223.0f).colspan(2);
+        table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f).colspan(2);
 
         table.row();
-        labelPlay = new Label("DOU", skin, "label64");
-        labelPlay.setAlignment(Align.top);
-        table.add(labelPlay).padTop(32.0f).expandX().align(Align.top).colspan(2);
+        labelSetting = new Label("SETTING", skin, "label32");
+        labelSetting.setAlignment(Align.top);
+        table.add(labelSetting).padTop(30.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
-        playButton = new ImageTextButton("PLAY", skin);
-        table.add(playButton).padTop(93.0f).expand().align(Align.top).colspan(2);
+        HorizontalGroup horizontalGroup = new HorizontalGroup();
+        horizontalGroup.align(Align.top);
+        horizontalGroup.space(64.0f);
+
+        musicOnButton = new Image(skin, "plus 1");
+        horizontalGroup.addActor(musicOnButton);
+
+        musicOffButton = new Image(skin, "plus 2");
+        horizontalGroup.addActor(musicOffButton);
+        table.add(horizontalGroup).padTop(76.0f).expandX().align(Align.top).colspan(2);
+
+        table.row();
+        horizontalGroup = new HorizontalGroup();
+        horizontalGroup.align(Align.top);
+        horizontalGroup.space(40.0f);
+
+        languageEnButton = new Image(skin, "eng_flag");
+        horizontalGroup.addActor(languageEnButton);
+
+        languageBrButton = new Image(skin, "bras_flag");
+        horizontalGroup.addActor(languageBrButton);
+        table.add(horizontalGroup).padTop(133.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
         settingButton = new Image(skin, "setting");
         settingButton.setScaling(Scaling.fit);
-        table.add(settingButton).padLeft(24.0f).padBottom(34.0f).expandX().align(Align.bottomLeft);
+        table.add(settingButton).padLeft(24.0f).padBottom(34.0f).expand().align(Align.bottomLeft);
 
         achievementsButton = new Image(skin, "achievements");
         achievementsButton.setScaling(Scaling.fit);
-        table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expandX().align(Align.bottomRight);
+        table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expand().align(Align.bottomRight);
+
+        texture = new Texture("background.png");
 
         setClickListeners();
         container.setActor(table);
         mainTable.add(container);
         stage.addActor(mainTable);
-
     }
 
     private void setClickListeners() {
-        playButton.addListener(new ClickListener() {
+        returnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.setScreen(new SelectDiffScreen(main));
+                main.setScreen(new MainMenuScreen(main));
             }
         });
-
-        settingButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                main.setScreen(new SettingScreen(main));
-            }
-        });
-
 
         achievementsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 main.setScreen(new AchievScreen(main));
+            }
+        });
+
+        musicOnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameSettings.setMusicOn(true);
+                main.playMusic(GameSettings.getMusicOn());
+            }
+        });
+
+        musicOffButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameSettings.setMusicOn(false);
+                main.playMusic(GameSettings.getMusicOn());
+            }
+        });
+
+        languageEnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameSettings.setLanguage("en");
+                Localization.setLanguage(GameSettings.getLanguage());
+            }
+        });
+
+        languageBrButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameSettings.setLanguage("br");
+                Localization.setLanguage(GameSettings.getLanguage());
             }
         });
     }
@@ -129,7 +180,7 @@ public class MainMenuScreen implements Screen {
         updateCamera();
         initLocalizedUI();
 
-        drawBackground(new Texture("background.png"));
+        drawBackground(texture);
 
         stage.act();
         stage.draw();
@@ -158,16 +209,16 @@ public class MainMenuScreen implements Screen {
         stage.dispose();
         skin.dispose();
         main.batch.dispose();
+        texture.dispose();
     }
-
 
     private void setCamera() {
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(SCREEN_WIDTH, SCREEN_HEIGHT,camera);
+        viewport = new ExtendViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
         stage = new Stage(viewport);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        Gdx.input.setInputProcessor(stage);
     }
-
 
     private void updateCamera() {
         ScreenUtils.clear(1, 1, 1, 1);
@@ -193,10 +244,7 @@ public class MainMenuScreen implements Screen {
         main.batch.end();
     }
 
-
     private void initLocalizedUI() {
-        playButton.setText(Loc.getLoc(Loc.PLAY));
+        labelSetting.setText(Localization.getLoc(Localization.SETTING));
     }
-
-
 }

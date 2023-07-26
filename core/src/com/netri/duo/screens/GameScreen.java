@@ -1,11 +1,11 @@
-package com.netri.duo.screen;
+package com.netri.duo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,24 +25,26 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
-import com.netri.duo.actor.BallsActor;
-import com.netri.duo.actor.BlockActor;
+import com.netri.duo.actors.BallsActor;
+import com.netri.duo.actors.BlockActor;
+import com.netri.duo.tools.GameSettings;
+import com.netri.duo.tools.RoundCircle;
 
 import java.util.Iterator;
 
 public class GameScreen implements Screen {
+
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
     public static final float SCREEN_HEIGHT = Main.SCREEN_HEIGHT;
 
     private final Main main;
     private Viewport viewport;
 
-    public static int difficulty = 1;
-
     private Skin skin;
     private Stage stage;
 
     private Table mainTable;
+    private Stack stackMain;
     private Container container;
     private Table table;
 
@@ -50,6 +52,7 @@ public class GameScreen implements Screen {
     public float aX = 0;
     private float aY = 0;
 
+    //Table
     private Image returnButton;
     private Label labelScore;
     private Image ring;
@@ -61,11 +64,12 @@ public class GameScreen implements Screen {
 
     // My actors
     private boolean isActorAdded = false;
-    private Group ballsGroup;
+
     private BallsActor ballRed;
+    private Circle circleRed = new Circle();
+
     private BallsActor ballBlue;
-    private final Vector3 touchPos = new Vector3();
-    private float speedBalls = 100;
+    private Circle circleBlue = new Circle();
 
     private Array<BlockActor> blocks = new Array<>();
     private Group blocksGroup;
@@ -73,29 +77,26 @@ public class GameScreen implements Screen {
     private float deltaTimeMillis;
     private float speedBlock;
 
-
+    private final int difficulty;
     public int score = 0;
 
     public GameScreen(Main main, int difficulty) {
         this.main = main;
-        GameScreen.difficulty = difficulty;
+        this.difficulty = difficulty;
         setDifficulty();
+        GameSettings.setPlayGameTimes(GameSettings.getPlayGameTimes() + 1);
     }
 
     @Override
     public void show() {
-        setCameraAndStage();
+        showCameraAndStage();
         skin = new Skin(Gdx.files.internal("skin.json"));
 
         mainTable = new Table();
         mainTable.setFillParent(true);
 
-        Stack stackMain = new Stack();
-
-        Texture texture = new Texture("background.png");
-        Image image = new Image(texture);
-        image.setScaling(Scaling.fillY);
-        stackMain.addActor(image);
+        stackMain = new Stack();
+        addBackground(stackMain);
 
         container = new Container();
         container.minWidth(360.0f);
@@ -155,9 +156,6 @@ public class GameScreen implements Screen {
 
         blocksGroup = new Group();
         stage.addActor(blocksGroup);
-
-        ballsGroup = new Group();
-        stage.addActor(ballsGroup);
     }
 
 
@@ -187,7 +185,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        updateCamera();
+        renderCamera();
 
 
         stage.act();
@@ -221,7 +219,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     public void dispose() {
@@ -230,13 +227,13 @@ public class GameScreen implements Screen {
         main.batch.dispose();
     }
 
-    private void setCameraAndStage() {
+    private void showCameraAndStage() {
         viewport = new ExtendViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
     }
 
-    private void updateCamera() {
+    private void renderCamera() {
         ScreenUtils.clear(1, 1, 1, 1);
         viewport.apply();
         main.batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -245,6 +242,13 @@ public class GameScreen implements Screen {
     private void resizeCamera(int width, int height) {
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
+    }
+
+    private void addBackground(Stack stackMain) {
+        Texture texture = new Texture("background.png");
+        Image image = new Image(texture);
+        image.setScaling(Scaling.fillY);
+        stackMain.addActor(image);
     }
 
     private void setContainerPosition() {
@@ -260,12 +264,12 @@ public class GameScreen implements Screen {
     }
 
     private void setDifficulty() {
-        if (GameScreen.difficulty == 1) {
-            speedBlock = 80;
-            deltaTimeMillis = 4000;
-        } else {
+        if (difficulty == 1) {
             speedBlock = 120;
             deltaTimeMillis = 3000;
+        } else {
+            speedBlock = 160;
+            deltaTimeMillis = 2000;
         }
     }
 
@@ -278,7 +282,6 @@ public class GameScreen implements Screen {
             stage.addActor(ballBlue);
 
             isActorAdded = true;
-            System.out.println("added!!!!");
         }
     }
 
@@ -311,13 +314,11 @@ public class GameScreen implements Screen {
     private void intersectionBlocksAndBalls() {
         for (Iterator<BlockActor> iterator = blocks.iterator(); iterator.hasNext(); ) {
             BlockActor block = iterator.next();
+            circleRed = RoundCircle.getCircle(aX + SCREEN_WIDTH / 2, aY + 83 + 125, ballRed.radius, 125, 180, ballRed.getRotation());
+            circleBlue = RoundCircle.getCircle(aX + SCREEN_WIDTH / 2, aY + 83 + 125, ballBlue.radius, 125, 0, ballBlue.getRotation());
 
-
-            if (Intersector.overlaps(ballRed.getCircle(), block.getRect()) || Intersector.overlaps(ballBlue.getCircle(), block.getRect())) {
-                System.out.println(ballRed.getCircle().y + " " + ballBlue.getCircle().y);
-                System.out.println(block.getRect().y);
-
-                main.setScreen(new GameOverScreen(main, score));
+            if (Intersector.overlaps(circleRed, block.getRect()) || Intersector.overlaps(circleBlue, block.getRect())) {
+                main.setScreen(new GameOverScreen(main, score, difficulty));
             }
         }
     }
@@ -325,6 +326,4 @@ public class GameScreen implements Screen {
     private void setScore() {
         labelScore.setText(score);
     }
-
-
 }

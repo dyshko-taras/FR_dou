@@ -1,17 +1,12 @@
-package com.netri.duo.actor;
+package com.netri.duo.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.netri.duo.Main;
-
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 
 
 public class BlockActor extends Actor {
@@ -56,7 +51,6 @@ public class BlockActor extends Actor {
         super.act(delta);
         moveBy(0, -speed * delta);
         setBounds(getX(), getY(), getWidth(), getHeight());
-//        System.out.println(getY());
     }
 
     public Rectangle getRect() {

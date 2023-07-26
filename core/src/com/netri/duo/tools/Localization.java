@@ -1,6 +1,6 @@
 package com.netri.duo.tools;
 
-public class Loc {
+public class Localization {
 
     public static final int PLAY = 0;
     public static final int SETTING = 1;

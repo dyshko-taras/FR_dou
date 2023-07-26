@@ -1,4 +1,4 @@
-package com.netri.duo.screen;
+package com.netri.duo.screens;
 
 import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
 
@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
 import com.netri.duo.tools.GameSettings;
-import com.netri.duo.tools.Loc;
+import com.netri.duo.tools.Localization;
 
 public class AchievScreen implements Screen {
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
@@ -39,7 +39,6 @@ public class AchievScreen implements Screen {
     private Table mainTable;
     private Container container;
     private Table table;
-
 
 
     private Image returnButton;
@@ -61,6 +60,7 @@ public class AchievScreen implements Screen {
     private Image settingButton;
     private Image achievementsButton;
 
+    private Texture texture;
 
     public AchievScreen(Main main) {
         this.main = main;
@@ -71,7 +71,6 @@ public class AchievScreen implements Screen {
         setCamera();
 
         skin = new Skin(Gdx.files.internal("skin.json"));
-        Gdx.input.setInputProcessor(stage);
 
         mainTable = new Table();
         mainTable.setFillParent(true);
@@ -108,7 +107,7 @@ public class AchievScreen implements Screen {
 
         Stack stack = new Stack();
 
-        progressBar1 = new ProgressBar(-1.0f, 10.0f, 1.0f, false, skin);
+        progressBar1 = new ProgressBar(-1.0f, 10.0f, 1.0f, false, skin, "progBar1");
         progressBar1.setValue(0);
         stack.addActor(progressBar1);
 
@@ -136,7 +135,7 @@ public class AchievScreen implements Screen {
 
         stack = new Stack();
 
-        progressBar2 = new ProgressBar(-2.0f, 20.0f, 1.0f, false, skin);
+        progressBar2 = new ProgressBar(-2.0f, 20.0f, 1.0f, false, skin, "progBar2");
         progressBar2.setValue(0);
         stack.addActor(progressBar2);
 
@@ -163,7 +162,7 @@ public class AchievScreen implements Screen {
 
         stack = new Stack();
 
-        progressBar3 = new ProgressBar(-8.0f, 60.0f, 1.0f, false, skin);
+        progressBar3 = new ProgressBar(-8.0f, 60.0f, 1.0f, false, skin, "progBar3");
         progressBar3.setValue(0);
         stack.addActor(progressBar3);
 
@@ -190,8 +189,12 @@ public class AchievScreen implements Screen {
         table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expand().align(Align.bottomRight);
 
         setProgressBarData();
+        setEmptyProgressBar();
+
+        texture = new Texture("background.png");
 
         setClickListeners();
+
         container.setActor(table);
         mainTable.add(container);
         stage.addActor(mainTable);
@@ -218,7 +221,7 @@ public class AchievScreen implements Screen {
         updateCamera();
         initLocalizedUI();
 
-        drawBackground(new Texture("background.png"));
+        drawBackground(texture);
 
         stage.act();
         stage.draw();
@@ -240,13 +243,13 @@ public class AchievScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     public void dispose() {
         stage.dispose();
         skin.dispose();
         main.batch.dispose();
+        texture.dispose();
     }
 
     private void setCamera() {
@@ -282,10 +285,10 @@ public class AchievScreen implements Screen {
     }
 
     private void initLocalizedUI() {
-        labelAchiev.setText(Loc.getLoc(Loc.ACHIEVEMENTS));
-        labelProgbar1text.setText(Loc.getLoc(Loc.PLAY_10_TIMES));
-        labelProgbar2text.setText(Loc.getLoc(Loc.GET_20_SCORE));
-        labelProgbar3text.setText(Loc.getLoc(Loc.GET_60_SCORE));
+        labelAchiev.setText(Localization.getLoc(Localization.ACHIEVEMENTS));
+        labelProgbar1text.setText(Localization.getLoc(Localization.PLAY_10_TIMES));
+        labelProgbar2text.setText(Localization.getLoc(Localization.GET_20_SCORE));
+        labelProgbar3text.setText(Localization.getLoc(Localization.GET_60_SCORE));
     }
 
     private void setProgressBarData() {
@@ -297,5 +300,19 @@ public class AchievScreen implements Screen {
 
         progressBar3.setValue(GameSettings.getScore());
         labelProgbar3num.setText(GameSettings.getScore() + "/60");
+    }
+
+    private void setEmptyProgressBar() {
+        if (progressBar1.getValue() == 0) {
+            progressBar1.getStyle().knobBefore = skin.newDrawable("Empty");
+        }
+
+        if (progressBar2.getValue() == 0) {
+            progressBar2.getStyle().knobBefore = skin.newDrawable("Empty");
+        }
+
+        if (progressBar3.getValue() == 0) {
+            progressBar3.getStyle().knobBefore = skin.newDrawable("Empty");
+        }
     }
 }

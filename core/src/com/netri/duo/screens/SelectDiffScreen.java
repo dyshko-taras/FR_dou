@@ -1,6 +1,4 @@
-package com.netri.duo.screen;
-
-import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
+package com.netri.duo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -21,10 +19,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
-import com.netri.duo.tools.GameSettings;
-import com.netri.duo.tools.Loc;
+import com.netri.duo.tools.Localization;
 
-public class GameOverScreen implements Screen {
+public class SelectDiffScreen implements Screen {
 
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
     public static final float SCREEN_HEIGHT = Main.SCREEN_HEIGHT;
@@ -42,27 +39,23 @@ public class GameOverScreen implements Screen {
 
     private Image returnButton;
     private Image ballsIcon;
-    private Label labelGameOver;
-    private Label labelScore;
-    private ImageTextButton playAgainButton;
+    private Label labelSelectDiff;
+    private ImageTextButton easyButton;
+    private ImageTextButton hardButton;
     private Image settingButton;
     private Image achievementsButton;
 
-    private int score;
+    private Texture texture;
 
-    public GameOverScreen(Main main, int score) {
+    public SelectDiffScreen(Main main) {
         this.main = main;
-        this.score = score;
-        setMaximumScore();
     }
 
     @Override
     public void show() {
         setCamera();
 
-
         skin = new Skin(Gdx.files.internal("skin.json"));
-        Gdx.input.setInputProcessor(stage);
 
         mainTable = new Table();
         mainTable.setFillParent(true);
@@ -77,26 +70,25 @@ public class GameOverScreen implements Screen {
 
         returnButton = new Image(skin, "arrow left");
         returnButton.setScaling(Scaling.fit);
-        table.add(returnButton).padLeft(24.0f).padTop(32.0f).expandX().align(Align.topLeft).minSize(48.0f);
+        table.add(returnButton).padLeft(24.0f).padTop(32.0f).expandX().align(Align.topLeft);
 
         ballsIcon = new Image(skin, "Balls");
-        ballsIcon.setTouchable(disabled);
         ballsIcon.setScaling(Scaling.fit);
-        table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f).colspan(2);
+        table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f);
 
         table.row();
-        labelGameOver = new Label("GAME OVER", skin, "label32");
-        labelGameOver.setAlignment(Align.top);
-        table.add(labelGameOver).padTop(30.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
+        labelSelectDiff = new Label("SELECT \n"
+                + "DIFFICULTY", skin, "label32");
+        labelSelectDiff.setAlignment(Align.top);
+        table.add(labelSelectDiff).padTop(30.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
-        labelScore = new Label("SCORE: 22", skin, "label32");
-        labelScore.setAlignment(Align.top);
-        table.add(labelScore).padTop(69.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
+        easyButton = new ImageTextButton("EASY", skin);
+        table.add(easyButton).padTop(138.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
-        playAgainButton = new ImageTextButton("PLAY AGAIN", skin);
-        table.add(playAgainButton).padTop(137.0f).expandX().colspan(2);
+        hardButton = new ImageTextButton("HARD", skin);
+        table.add(hardButton).padTop(51.0f).expandX().align(Align.top).colspan(2);
 
         table.row();
         settingButton = new Image(skin, "setting");
@@ -106,6 +98,8 @@ public class GameOverScreen implements Screen {
         achievementsButton = new Image(skin, "achievements");
         achievementsButton.setScaling(Scaling.fit);
         table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expand().align(Align.bottomRight);
+
+        texture = new Texture("background.png");
 
         setClickListeners();
         container.setActor(table);
@@ -135,12 +129,21 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        playAgainButton.addListener(new ClickListener() {
+        easyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.setScreen(new GameScreen(main,GameScreen.difficulty));
+                main.setScreen(new GameScreen(main,1));
             }
         });
+
+        hardButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new GameScreen(main,2));
+
+            }
+        });
+
     }
 
     @Override
@@ -148,7 +151,7 @@ public class GameOverScreen implements Screen {
         updateCamera();
         initLocalizedUI();
 
-        drawBackground(new Texture("background.png"));
+        drawBackground(texture);
 
         stage.act();
         stage.draw();
@@ -177,6 +180,7 @@ public class GameOverScreen implements Screen {
         stage.dispose();
         skin.dispose();
         main.batch.dispose();
+        texture.dispose();
     }
 
     private void setCamera() {
@@ -213,14 +217,8 @@ public class GameOverScreen implements Screen {
     }
 
     private void initLocalizedUI() {
-        labelGameOver.setText(Loc.getLoc(Loc.GAME_OVER));
-        labelScore.setText(Loc.getLoc(Loc.SCORE) + score);
-        playAgainButton.setText(Loc.getLoc(Loc.PLAY_AGAIN));
-    }
-
-    private void setMaximumScore() {
-        if (GameSettings.getScore() < score) {
-            GameSettings.setScore(score);
-        }
+        labelSelectDiff.setText(Localization.getLoc(Localization.SELECT_DIFFICULTY));
+        easyButton.setText(Localization.getLoc(Localization.EASY));
+        hardButton.setText(Localization.getLoc(Localization.HARD));
     }
 }

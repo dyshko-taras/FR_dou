@@ -1,4 +1,4 @@
-package com.netri.duo.actor;
+package com.netri.duo.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.netri.duo.Main;
-import com.netri.duo.screen.GameScreen;
 
 public class BallsActor extends Actor {
     private float aX;
@@ -33,7 +32,7 @@ public class BallsActor extends Actor {
 
         setPosition(aX + x, aY + y);
         setSize(radius * 2, radius * 2);
-        setOrigin(oX, oY);
+        setOrigin(oX, oY); // is relative to the position
 
         this.radius = radius;
     }
@@ -69,18 +68,5 @@ public class BallsActor extends Actor {
         return circle;
     }
 
-//    public Circle getCircle() {
-//        float imageCenterX = getX() + getOriginX(); // Координата X центру image
-//        float imageCenterY = getY() + getOriginY(); // Координата Y центру image
-//
-//        // Створення вектора радіуса Circle і обертання його на кут повороту об'єкта
-//        Vector2 radiusVector = new Vector2(0, radius).rotateDeg(getRotation());
-//
-//        // Оновлення координат центру Circle з урахуванням повороту
-//        float circleCenterX = imageCenterX + radiusVector.x;
-//        float circleCenterY = imageCenterY + radiusVector.y;
-//
-//        circle.set(circleCenterX, circleCenterY, radius); //
-//        return circle;
-//    }
 }
+

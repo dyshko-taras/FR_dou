@@ -1,4 +1,6 @@
-package com.netri.duo.screen;
+package com.netri.duo.screens;
+
+import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,8 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,9 +22,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.netri.duo.Main;
 import com.netri.duo.tools.GameSettings;
-import com.netri.duo.tools.Loc;
+import com.netri.duo.tools.Localization;
 
-public class SettingScreen implements Screen {
+public class GameOverScreen implements Screen {
+
     public static final float SCREEN_WIDTH = Main.SCREEN_WIDTH;
     public static final float SCREEN_HEIGHT = Main.SCREEN_HEIGHT;
 
@@ -39,26 +42,30 @@ public class SettingScreen implements Screen {
 
     private Image returnButton;
     private Image ballsIcon;
-    private Label labelSetting;
-    private Image musicOnButton;
-    private Image musicOffButton;
-    private Image languageEnButton;
-    private Image languageBrButton;
+    private Label labelGameOver;
+    private Label labelScore;
+    private ImageTextButton playAgainButton;
     private Image settingButton;
     private Image achievementsButton;
 
+    private Texture texture;
 
-    public SettingScreen(Main main) {
+    private int score;
+    private int difficulty;
+
+    public GameOverScreen(Main main, int score, int difficulty) {
         this.main = main;
+        this.score = score;
+        this.difficulty = difficulty;
+        setMaximumScore();
     }
-
 
     @Override
     public void show() {
         setCamera();
 
+
         skin = new Skin(Gdx.files.internal("skin.json"));
-        Gdx.input.setInputProcessor(stage);
 
         mainTable = new Table();
         mainTable.setFillParent(true);
@@ -73,40 +80,26 @@ public class SettingScreen implements Screen {
 
         returnButton = new Image(skin, "arrow left");
         returnButton.setScaling(Scaling.fit);
-        table.add(returnButton).padLeft(24.0f).padTop(32.0f).expandX().align(Align.topLeft);
+        table.add(returnButton).padLeft(24.0f).padTop(32.0f).expandX().align(Align.topLeft).minSize(48.0f);
 
         ballsIcon = new Image(skin, "Balls");
+        ballsIcon.setTouchable(disabled);
         ballsIcon.setScaling(Scaling.fit);
         table.add(ballsIcon).padRight(108.0f).padTop(42.0f).expandX().align(Align.topRight).minWidth(144.0f).minHeight(97.0f).colspan(2);
 
         table.row();
-        labelSetting = new Label("SETTING", skin, "label32");
-        labelSetting.setAlignment(Align.top);
-        table.add(labelSetting).padTop(30.0f).expandX().align(Align.top).colspan(2);
+        labelGameOver = new Label("GAME OVER", skin, "label32");
+        labelGameOver.setAlignment(Align.top);
+        table.add(labelGameOver).padTop(30.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
 
         table.row();
-        HorizontalGroup horizontalGroup = new HorizontalGroup();
-        horizontalGroup.align(Align.top);
-        horizontalGroup.space(64.0f);
-
-        musicOnButton = new Image(skin, "plus 1");
-        horizontalGroup.addActor(musicOnButton);
-
-        musicOffButton = new Image(skin, "plus 2");
-        horizontalGroup.addActor(musicOffButton);
-        table.add(horizontalGroup).padTop(76.0f).expandX().align(Align.top).colspan(2);
+        labelScore = new Label("SCORE: 22", skin, "label32");
+        labelScore.setAlignment(Align.top);
+        table.add(labelScore).padTop(69.0f).expandX().align(Align.top).minWidth(6.0f).colspan(2);
 
         table.row();
-        horizontalGroup = new HorizontalGroup();
-        horizontalGroup.align(Align.top);
-        horizontalGroup.space(40.0f);
-
-        languageEnButton = new Image(skin, "eng_flag");
-        horizontalGroup.addActor(languageEnButton);
-
-        languageBrButton = new Image(skin, "bras_flag");
-        horizontalGroup.addActor(languageBrButton);
-        table.add(horizontalGroup).padTop(133.0f).expandX().align(Align.top).colspan(2);
+        playAgainButton = new ImageTextButton("PLAY AGAIN", skin);
+        table.add(playAgainButton).padTop(137.0f).expandX().colspan(2);
 
         table.row();
         settingButton = new Image(skin, "setting");
@@ -116,6 +109,8 @@ public class SettingScreen implements Screen {
         achievementsButton = new Image(skin, "achievements");
         achievementsButton.setScaling(Scaling.fit);
         table.add(achievementsButton).padRight(28.0f).padBottom(28.0f).expand().align(Align.bottomRight);
+
+        texture = new Texture("background.png");
 
         setClickListeners();
         container.setActor(table);
@@ -131,6 +126,13 @@ public class SettingScreen implements Screen {
             }
         });
 
+        settingButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                main.setScreen(new SettingScreen(main));
+            }
+        });
+
         achievementsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -138,46 +140,20 @@ public class SettingScreen implements Screen {
             }
         });
 
-        musicOnButton.addListener(new ClickListener() {
+        playAgainButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GameSettings.setMusicOn(true);
-                main.playMusic(GameSettings.getMusicOn());
-            }
-        });
-
-        musicOffButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameSettings.setMusicOn(false);
-                main.playMusic(GameSettings.getMusicOn());
-            }
-        });
-
-        languageEnButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameSettings.setLanguage("en");
-                Loc.setLanguage(GameSettings.getLanguage());
-            }
-        });
-
-        languageBrButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameSettings.setLanguage("br");
-                Loc.setLanguage(GameSettings.getLanguage());
+                main.setScreen(new GameScreen(main,difficulty));
             }
         });
     }
-
 
     @Override
     public void render(float delta) {
         updateCamera();
         initLocalizedUI();
 
-        drawBackground(new Texture("background.png"));
+        drawBackground(texture);
 
         stage.act();
         stage.draw();
@@ -206,6 +182,7 @@ public class SettingScreen implements Screen {
         stage.dispose();
         skin.dispose();
         main.batch.dispose();
+        texture.dispose();
     }
 
     private void setCamera() {
@@ -215,6 +192,7 @@ public class SettingScreen implements Screen {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         Gdx.input.setInputProcessor(stage);
     }
+
 
     private void updateCamera() {
         ScreenUtils.clear(1, 1, 1, 1);
@@ -241,6 +219,14 @@ public class SettingScreen implements Screen {
     }
 
     private void initLocalizedUI() {
-        labelSetting.setText(Loc.getLoc(Loc.SETTING));
+        labelGameOver.setText(Localization.getLoc(Localization.GAME_OVER));
+        labelScore.setText(Localization.getLoc(Localization.SCORE) + score);
+        playAgainButton.setText(Localization.getLoc(Localization.PLAY_AGAIN));
+    }
+
+    private void setMaximumScore() {
+        if (GameSettings.getScore() < score) {
+            GameSettings.setScore(score);
+        }
     }
 }

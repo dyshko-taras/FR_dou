@@ -6,133 +6,133 @@ filter: Linear, Linear
 repeat: none
 GolosText-Black(1)_0
   rotate: false
-  xy: 1, 65
+  xy: 1223, 1529
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 GolosText-Black(1)_1
   rotate: false
-  xy: 515, 65
+  xy: 1003, 1015
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 GolosText-Black-32
   rotate: false
-  xy: 1043, 1458
+  xy: 1003, 634
   size: 506, 255
   orig: 506, 255
   offset: 0, 0
   index: -1
 GolosText-Bold
   rotate: false
-  xy: 1043, 1715
+  xy: 1003, 891
   size: 506, 122
   orig: 506, 122
   offset: 0, 0
   index: -1
 GolosText-SemiBold-16
   rotate: false
-  xy: 1, 1
+  xy: 1517, 1465
   size: 503, 62
   orig: 503, 62
   offset: 0, 0
   index: -1
 GolosText-SemiBold-24
   rotate: false
-  xy: 1003, 1338
+  xy: 1003, 514
   size: 506, 118
   orig: 506, 118
   offset: 0, 0
   index: -1
 GolosText-SemiBold-MY
   rotate: false
-  xy: 1003, 1338
+  xy: 1003, 514
   size: 506, 118
   orig: 506, 118
   offset: 0, 0
   index: -1
 Balls
   rotate: false
-  xy: 1003, 1113
+  xy: 1517, 1240
   size: 330, 223
   orig: 330, 223
   offset: 0, 0
   index: -1
 Rectangle
   rotate: false
-  xy: 1, 1581
+  xy: 1, 1595
   size: 1040, 264
   orig: 1040, 264
   offset: 0, 0
   index: -1
 achievements
   rotate: false
-  xy: 1551, 1629
+  xy: 1043, 1651
   size: 125, 208
   orig: 125, 208
   offset: 0, 0
   index: -1
 arrow left
   rotate: false
-  xy: 1029, 145
+  xy: 1737, 1559
   size: 192, 192
   orig: 192, 192
   offset: 0, 0
   index: -1
 ball_green
   rotate: false
-  xy: 1003, 581
+  xy: 1517, 998
   size: 240, 240
   orig: 240, 240
   offset: 0, 0
   index: -1
 ball_red
   rotate: false
-  xy: 1029, 339
+  xy: 1511, 756
   size: 240, 240
   orig: 240, 240
   offset: 0, 0
   index: -1
 bras_flag
   rotate: false
-  xy: 1003, 823
+  xy: 707, 303
   size: 288, 288
   orig: 288, 288
   offset: 0, 0
   index: -1
 eng_flag
   rotate: false
-  xy: 1733, 1739
+  xy: 1737, 1753
   size: 288, 288
   orig: 288, 288
   offset: 0, 0
   index: -1
 plus 1
   rotate: false
-  xy: 1335, 1144
+  xy: 1511, 562
   size: 192, 192
   orig: 192, 192
   offset: 0, 0
   index: -1
 plus 2
   rotate: false
-  xy: 1245, 629
+  xy: 511, 1
   size: 192, 192
   orig: 192, 192
   offset: 0, 0
   index: -1
 rect achiev
   rotate: false
-  xy: 1, 1847
+  xy: 1, 1861
   size: 1220, 180
   orig: 1220, 180
   offset: 0, 0
   index: -1
 rect achiev in
   rotate: false
-  xy: 506, 20
+  xy: 1849, 1420
   size: 43, 43
   split: 21, 21, 21, 21
   orig: 43, 43
@@ -140,29 +140,36 @@ rect achiev in
   index: -1
 rectangle_black
   rotate: false
-  xy: 1223, 1839
+  xy: 1, 5
   size: 508, 188
   orig: 508, 188
   offset: 0, 0
   index: -1
 ring
   rotate: false
-  xy: 1, 579
+  xy: 1, 593
   size: 1000, 1000
   orig: 1000, 1000
   offset: 0, 0
   index: -1
 setting
   rotate: false
-  xy: 1271, 427
+  xy: 997, 312
   size: 187, 200
   orig: 187, 200
   offset: 0, 0
   index: -1
 white-pixel
   rotate: false
-  xy: 1043, 1844
+  xy: 1003, 1592
   size: 1, 1
   orig: 1, 1
+  offset: 0, 0
+  index: -1
+Empty
+  rotate: false
+  xy: 1, 195
+  size: 704, 396
+  orig: 704, 396
   offset: 0, 0
   index: -1

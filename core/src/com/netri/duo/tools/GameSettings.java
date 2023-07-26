@@ -21,17 +21,18 @@ public class GameSettings {
     public static String getLanguage() {
         return preferences.getString(KEY_LANGUAGE, "en"); // default "en"
     }
+
     public static void setLanguage(String languageCode) {
         preferences.putString(KEY_LANGUAGE, languageCode);
         preferences.flush();
     }
 
 
-
     //music
     public static boolean getMusicOn() {
         return preferences.getBoolean(KEY_MUSIC_ON, true);
     }
+
     public static void setMusicOn(boolean music) {
         preferences.putBoolean(KEY_MUSIC_ON, music);
         preferences.flush();
@@ -41,6 +42,7 @@ public class GameSettings {
     public static int getScore() {
         return preferences.getInteger(KEY_SCORE, 0);
     }
+
     public static void setScore(int score) {
         preferences.putInteger(KEY_SCORE, score);
         preferences.flush();
@@ -50,6 +52,7 @@ public class GameSettings {
     public static int getPlayGameTimes() {
         return preferences.getInteger(KEY_PLAY_GAME_TIMES, 0);
     }
+
     public static void setPlayGameTimes(int playGameTimes) {
         preferences.putInteger(KEY_PLAY_GAME_TIMES, playGameTimes);
         preferences.flush();

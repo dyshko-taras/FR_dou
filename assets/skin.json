@@ -135,6 +135,17 @@ com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable: {
 		minHeight: 45
 	}
 }
+com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable: {
+	rect achiev in: {
+		patch: rect achiev in
+		minWidth: 43
+		minHeight: 43
+		leftWidth: 21
+		rightWidth: 21
+		topHeight: 21
+		bottomHeight: 21
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	reco: {
 		name: white-pixel
@@ -179,10 +190,25 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 		background: rect achiev
 		knobBefore: rect achiev in
 	}
-	progBar: {
+	progBar1: {
 		parent: default-horizontal
 		background: rect achiev
-		knobBefore: reco
+		knobBefore: rect achiev in
+	}
+	progBar2: {
+		parent: default-horizontal
+		background: rect achiev
+		knobBefore: rect achiev in
+	}
+	progBar3: {
+		parent: default-horizontal
+		background: rect achiev
+		knobBefore: rect achiev in
+	}
+	emptyBar: {
+		parent: default-horizontal
+		background: rect achiev
+		knobBefore: Empty
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
